@@ -6,13 +6,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import models.CourseInformation;
 import models.CourseTeaching;
+import models.Teacher;
 
 public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 
+	private TeacherDAO teacherDAO;
+	private CourseInformationDAO courseDAO;
+	
+	public CourseTeachingDAO() {
+		this.teacherDAO = new TeacherDAO();
+		this.courseDAO = new CourseInformationDAO();
+	}
+	
 	@Override
 	public String getTableName() {
-		return "teaching";
+		return Constants.TEACHING_TABLE_NAME;
 	}
 
 	@Override
@@ -20,7 +30,7 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		PreparedStatement insertStatement = null;
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO " + AbstractDAO.DB_NAME + "." + this.tableName);
+		sb.append("INSERT INTO " + this.getTableName());
 		sb.append(" (id, teacher_id, course_id) ");
 		sb.append("VALUES (?, ?, ?);");
 		
@@ -51,7 +61,7 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		PreparedStatement updateStatement = null;
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("UPDATE " + AbstractDAO.DB_NAME + "." + this.tableName + " SET ");
+		sb.append("UPDATE " + this.getTableName() + " SET ");
 		sb.append("teacher_id = ?, ");
 		sb.append("course_id = ?, ");
 		
@@ -71,5 +81,61 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		}
 		
 		return updateStatement;
+	}
+	
+	public List<CourseInformation> findTeacherCourses(Long teacherId) {
+		Connection connection = ConnectionFactory.getConnection();
+		PreparedStatement findStatement = null;
+		ResultSet resultSet = null;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT " + Constants.COURSES_TABLE_NAME + ".* FROM ");
+		sb.append(Constants.TEACHING_TABLE_NAME + " INNER JOIN ");
+		sb.append(Constants.COURSES_TABLE_NAME);
+		sb.append(" ON " + Constants.TEACHING_TABLE_NAME + ".course_id = ");
+		sb.append(Constants.COURSES_TABLE_NAME + ".id WHERE ");
+		sb.append(Constants.TEACHING_TABLE_NAME + ".teacher_id = ?;");
+		
+		String query = sb.toString();
+		
+		try {
+			findStatement = connection.prepareStatement(query);
+			findStatement.setLong(1, teacherId);
+			resultSet = findStatement.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			ConnectionFactory.close(resultSet);
+			ConnectionFactory.close(findStatement);
+			ConnectionFactory.close(connection);
+		}
+		return this.courseDAO.createObjects(resultSet);
+	}
+	
+	public List<Teacher> findCourseTeachers(Long courseId) {
+		Connection connection = ConnectionFactory.getConnection();
+		PreparedStatement findStatement = null;
+		ResultSet resultSet = null;
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT " + Constants.TEACHERS_TABLE_NAME + ".* FROM ");
+		sb.append(Constants.TEACHING_TABLE_NAME + " INNER JOIN ");
+		sb.append(Constants.TEACHERS_TABLE_NAME);
+		sb.append(" ON " + Constants.TEACHING_TABLE_NAME + ".teacher_id = ");
+		sb.append(Constants.TEACHERS_TABLE_NAME + ".id WHERE ");
+		sb.append(Constants.TEACHING_TABLE_NAME + ".course_id = ?;");
+		
+		String query = sb.toString();
+		
+		try {
+			findStatement = connection.prepareStatement(query);
+			findStatement.setLong(1, courseId);
+			resultSet = findStatement.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			ConnectionFactory.close(resultSet);
+			ConnectionFactory.close(findStatement);
+			ConnectionFactory.close(connection);
+		}
+		return this.teacherDAO.createObjects(resultSet);
 	}
 }

@@ -16,7 +16,7 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 
 	@Override
 	public String getTableName() {
-		return "courses";
+		return Constants.COURSES_TABLE_NAME;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 		PreparedStatement insertStatement = null;
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO " + AbstractDAO.DB_NAME + "." + this.tableName);
+		sb.append("INSERT INTO " + this.getTableName());
 		sb.append(" (id, name, code, description, start_date, end_date, exam_date) ");
 		sb.append("VALUES (?, ?, ?, ?, ?, ?, ?);");
 
@@ -46,7 +46,6 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 			ConnectionFactory.close(insertStatement);
 			ConnectionFactory.close(connection);
 		}
-
 		return insertStatement;
 	}
 
@@ -79,13 +78,15 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 		PreparedStatement updateStatement = null;
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("UPDATE " + AbstractDAO.DB_NAME + "." + this.tableName + " SET ");
+
+		sb.append("UPDATE " + this.getTableName() + " SET ");
 		sb.append("name = ?, ");
 		sb.append("code = ?, ");
 		sb.append("description = ?, ");
 		sb.append("start_date = ?, ");
 		sb.append("end_date = ? ");
 		sb.append("exam_date = ? ");
+
 		sb.append("WHERE id = ?;");
 
 		String updateQuery = sb.toString();
@@ -99,6 +100,7 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 			updateStatement.setObject(4, courseInfo.getStartDate());
 			updateStatement.setObject(5, courseInfo.getEndDate());
 			updateStatement.setObject(6, courseInfo.getExamDate());
+			
 			updateStatement.setLong(7, courseInfo.getId());
 
 		} catch (SQLException e) {
@@ -154,7 +156,7 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 		}
 		return students;
 	}
-	
+
 	public List<Teacher> findCourseTeachers(Long id) {
 		Connection connection = ConnectionFactory.getConnection();
 		PreparedStatement findStatement = null;

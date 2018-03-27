@@ -47,6 +47,7 @@ public class aaa extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	public aaa() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640, 480);
@@ -156,7 +157,7 @@ public class aaa extends JFrame {
 		separator2.setBounds(10, 79, 599, 2);
 		Enrollments.add(separator2);
 		
-		JList enrollmentList = new JList();
+		JList<String> enrollmentList = new JList<String>();
 		enrollmentList.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		enrollmentList.setValueIsAdjusting(true);
 		enrollmentList.setModel(new AbstractListModel() {

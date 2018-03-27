@@ -12,11 +12,9 @@ public abstract class AbstractDAO<T extends DBRecord> {
 
 	public static final String DB_NAME = "students_management";
 	public static Long nextID;
-	public final String tableName;
 
 	public AbstractDAO() {
 		nextID = Long.valueOf(2);
-		tableName = getTableName();
 	}
 
 	public abstract String getTableName();
@@ -44,16 +42,15 @@ public abstract class AbstractDAO<T extends DBRecord> {
 		Connection connection = ConnectionFactory.getConnection();
 		PreparedStatement findStatement = null;
 		ResultSet resultSet = null;
-		T t = null;
+		List<T> results = null;
 
 		String query = createSelectQuery("id");
 
 		try {
-			connection = ConnectionFactory.getConnection();
 			findStatement = connection.prepareStatement(query);
 			findStatement.setLong(1, id);
 			resultSet = findStatement.executeQuery();
-			t = createObjects(resultSet).get(0);
+			results = createObjects(resultSet);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -62,10 +59,14 @@ public abstract class AbstractDAO<T extends DBRecord> {
 			ConnectionFactory.close(findStatement);
 			ConnectionFactory.close(connection);
 		}
-		return t;
+		if (results != null) {
+			return results.get(0);
+		} else {
+			return null;
+		}
 	}
 	
-	public List<T> retrieveAll() {
+	public List<T> findAll() {
 
 		Connection connection = ConnectionFactory.getConnection();
 		PreparedStatement findStatement = null;
@@ -75,7 +76,6 @@ public abstract class AbstractDAO<T extends DBRecord> {
 		String query = createSelectQuery(null);
 
 		try {
-			connection = ConnectionFactory.getConnection();
 			findStatement = connection.prepareStatement(query);
 			resultSet = findStatement.executeQuery();
 			ts = createObjects(resultSet);
@@ -92,8 +92,8 @@ public abstract class AbstractDAO<T extends DBRecord> {
 
 	protected String createSelectQuery(String field) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM students_management.");
-		sb.append(this.tableName);
+		sb.append("SELECT * FROM ");
+		sb.append(this.getTableName());
 		if (field != null) {
 			sb.append(" WHERE " + field + " = ?;");
 			return sb.toString();
@@ -101,7 +101,7 @@ public abstract class AbstractDAO<T extends DBRecord> {
 			return sb.toString();
 		}
 	}
-
+	
 	protected abstract List<T> createObjects(ResultSet resultSet);
 
 	public void update(T t) {
@@ -130,7 +130,6 @@ public abstract class AbstractDAO<T extends DBRecord> {
 		String query = createDeleteQuery("id");
 
 		try {
-			connection = ConnectionFactory.getConnection();
 			deleteStatement = connection.prepareStatement(query);
 			deleteStatement.setLong(1, id);
 			deleteStatement.executeUpdate();
@@ -146,7 +145,7 @@ public abstract class AbstractDAO<T extends DBRecord> {
 	private String createDeleteQuery(String field) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM " + AbstractDAO.DB_NAME + ".");
-		sb.append(this.tableName);
+		sb.append(this.getTableName());
 		sb.append(" WHERE " + field + " = ?");
 		return sb.toString();
 	}

@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import services.StudentService;
-import services.TeacherService;
 import views.LoginView;
 
 public class LoginController {
@@ -22,7 +21,7 @@ public class LoginController {
 		public void actionPerformed(ActionEvent e) {
 			StudentService studentService = new StudentService();
 			String[] loginData = loginView.getLoginData();
-			if (studentService.login(loginData[0], loginData[1]) != null) {
+			if (studentService.login(loginData[0], loginData[1])) {
 				new StudentController(studentService);
 			} else {
 				loginView.displayErrorMessage();
@@ -34,8 +33,8 @@ public class LoginController {
 	class TeacherLoginListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			TeacherService teacherService = new TeacherService();
-			String[] loginData = loginView.getLoginData();
+//			TeacherService teacherService = new TeacherService();
+//			String[] loginData = loginView.getLoginData();
 //			if (teacherService.login(loginData[0], loginData[1]) != null) {
 //				System.out.println("TEEE");
 //			} else {

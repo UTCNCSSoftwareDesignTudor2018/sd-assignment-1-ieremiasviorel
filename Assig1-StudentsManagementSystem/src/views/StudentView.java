@@ -2,6 +2,8 @@ package views;
 
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -10,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
@@ -25,13 +28,15 @@ import javax.swing.table.DefaultTableModel;
 import models.CourseEnrollment;
 import models.CourseInformation;
 import models.Student;
+import services.CourseService;
 import services.StudentService;
 
 public class StudentView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private StudentService studentService;
+	private CourseService courseService;
 
 	private JPanel contentPane;
 	private JTabbedPane studentMenu;
@@ -43,7 +48,8 @@ public class StudentView extends JFrame {
 
 	private JLabel lblFirstName, lblFirstNameVal, lblLastName, lblLastNameVal, lblUserName, lblPassword, lblIdNumber,
 			lblIdNumberVal, lblEmail, lblEmailVal;
-	private JTextField txtUsername, txtPassword;
+	private JTextField txtUsername;
+	private JPasswordField txtPassword;
 	private JButton btnSaveChanges;
 
 	private JPanel enrollments;
@@ -59,10 +65,11 @@ public class StudentView extends JFrame {
 	private JTable coursesTable;
 	private JButton btnEnroll;
 
-	public StudentView(StudentService studentService) {
+	public StudentView(StudentService studentService, CourseService courseService) {
 
 		this.studentService = studentService;
-		
+		this.courseService = courseService;
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("TUC-N Portal");
 		setBounds(100, 100, 640, 480);
@@ -148,7 +155,7 @@ public class StudentView extends JFrame {
 		personalInfo.add(txtUsername);
 		txtUsername.setColumns(10);
 
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		txtPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtPassword.setColumns(10);
 		txtPassword.setBounds(447, 284, 127, 31);
@@ -177,17 +184,17 @@ public class StudentView extends JFrame {
 		enrollmentList = new JList<String>();
 		enrollmentList.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		enrollmentList.setValueIsAdjusting(true);
-//		enrollmentList.setModel(new AbstractListModel() {
-//			String[] values = new String[] {};
-//
-//			public int getSize() {
-//				return values.length;
-//			}
-//
-//			public Object getElementAt(int index) {
-//				return values[index];
-//			}
-//		});
+		// enrollmentList.setModel(new AbstractListModel() {
+		// String[] values = new String[] {};
+		//
+		// public int getSize() {
+		// return values.length;
+		// }
+		//
+		// public Object getElementAt(int index) {
+		// return values[index];
+		// }
+		// });
 		enrollmentList.setBackground(SystemColor.activeCaption);
 		enrollmentList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		enrollmentList.setBounds(30, 106, 263, 185);
@@ -290,7 +297,8 @@ public class StudentView extends JFrame {
 				new String[] { "Code", "Name", "Teacher", "Start Date", "Description" }) {
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("unchecked")
-			Class<String>[] columnTypes = new Class[] { String.class, String.class, Object.class, String.class, String.class };
+			Class<String>[] columnTypes = new Class[] { String.class, String.class, Object.class, String.class,
+					String.class };
 
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			public Class getColumnClass(int columnIndex) {
@@ -307,34 +315,43 @@ public class StudentView extends JFrame {
 		btnEnroll.setBounds(500, 366, 109, 36);
 		courses.add(btnEnroll);
 	}
-	
+
 	public void initializeView() {
-		
+
 		Student s = this.studentService.getLoggedInStudent();
-		
+
 		this.fullName1.setText(s.getFirstName() + " " + s.getLastName());
 		this.fullName2.setText(s.getFirstName() + " " + s.getLastName());
 		this.fullName3.setText(s.getFirstName() + " " + s.getLastName());
-		
+
 		this.lblFirstNameVal.setText(s.getFirstName());
 		this.lblLastNameVal.setText(s.getLastName());
 		this.txtUsername.setText(s.getUserName());
 		this.txtPassword.setText(s.getPassword());
 		this.lblIdNumberVal.setText(s.getIdNumber());
 		this.lblEmailVal.setText(s.getEmail());
-		
+
 		List<CourseEnrollment> courseEnrollments = s.getCourses();
 		DefaultListModel<String> courseNames = new DefaultListModel<String>();
 		for (CourseEnrollment c : courseEnrollments) {
 			courseNames.addElement(c.getCourse().getCode());
 		}
 		this.enrollmentList.setModel(courseNames);
+
+		DefaultTableModel tableModel = (DefaultTableModel) this.coursesTable.getModel();
+		List<CourseInformation> courses = this.courseService.getAllCourses();
+		for (CourseInformation c : courses) {
+			tableModel.addRow(
+					new Object[] { c.getCode(), c.getName(), c.getEndDate(), c.getStartDate(), c.getDescription() });
+			System.out.println(c.getCode());
+		}
+		this.coursesTable.setModel(tableModel);
 	}
-	
+
 	public void updateEnrollmentDetails() {
-		
+
 		String courseCode = this.enrollmentList.getSelectedValue();
-		
+
 		List<CourseEnrollment> enrollments = this.studentService.getLoggedInStudent().getCourses();
 		for (CourseEnrollment e : enrollments) {
 			if (e.getCourse().getCode().equals(courseCode)) {
@@ -342,16 +359,27 @@ public class StudentView extends JFrame {
 				this.lblCodeVal.setText(c.getName());
 				this.lblStartDateVal.setText(c.getStartDate().toString());
 				this.lblEndDateVal.setText(c.getEndDate().toString());
-				//this.lblTeacherVal
+				// this.lblTeacherVal
 				this.lblGradeVal.setText(e.getGrade().toString());
 				this.txtDescription.setText(c.getDescription());
 				return;
 			}
 		}
-		
+
 	}
-	
+
+	public List<String> getUserNameAndPassword() {
+		List<String> modifiedData = new ArrayList<String>();
+		modifiedData.add(this.txtUsername.getText());
+		modifiedData.add(new String(this.txtPassword.getPassword()));
+		return modifiedData;
+	}
+
 	public void addEnrollmentDetailsActionListener(ListSelectionListener e) {
 		this.enrollmentList.addListSelectionListener(e);
+	}
+
+	public void addModifyStudentDataActionListener(ActionListener e) {
+		this.btnSaveChanges.addActionListener(e);
 	}
 }
