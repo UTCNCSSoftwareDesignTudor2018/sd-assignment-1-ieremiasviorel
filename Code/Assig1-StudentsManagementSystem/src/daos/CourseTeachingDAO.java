@@ -114,6 +114,7 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		try {
 			findStatement = connection.prepareStatement(query);
 			findStatement.setLong(1, teacherId);
+			System.out.println(findStatement.toString());
 			resultSet = findStatement.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -130,7 +131,6 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		for (CourseInformation course : courses) {
 			courseTeaching.add(new CourseTeaching(teacher, course));
 		}
-		
 		return courseTeaching;
 	}
 	

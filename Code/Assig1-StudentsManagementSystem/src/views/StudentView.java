@@ -28,8 +28,6 @@ import entities.CourseEnrollment;
 import entities.CourseInformation;
 import entities.CourseTeaching;
 import entities.Student;
-import services.CourseService;
-import services.StudentService;
 import services.StudentSessionData;
 
 public class StudentView extends JFrame {
@@ -64,7 +62,7 @@ public class StudentView extends JFrame {
 	private JTable coursesTable;
 	private JButton btnEnroll;
 
-	public StudentView(StudentService studentService, CourseService courseService) {
+	public StudentView() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("TUC-N Portal");

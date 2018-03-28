@@ -9,7 +9,6 @@ import javax.swing.event.ListSelectionListener;
 
 import entities.CourseInformation;
 import entities.Student;
-import services.CourseService;
 import services.EnrollmentService;
 import services.StudentService;
 import services.StudentSessionData;
@@ -20,20 +19,19 @@ public class StudentController {
 
 	private StudentService studentService;
 	private EnrollmentService enrollmentService;
-	private CourseService courseService;
 	private TeachingService teachingService;
+	
 	private StudentView studentView;
 
 	public StudentController(StudentService studentService) {
 		this.studentService = studentService;
 		this.enrollmentService = new EnrollmentService();
-		this.courseService = new CourseService();
 		this.teachingService = new TeachingService();
 
 		StudentSessionData.setUnEnrolledCourses(
 				this.teachingService.getUnEnrolledStudentCourses(StudentSessionData.getStudent()));
 
-		this.studentView = new StudentView(this.studentService, this.courseService);
+		this.studentView = new StudentView();
 		this.studentView.updatePersonalInfoTab(StudentSessionData.getStudent());
 		this.studentView.updateEnrollmentsTab(StudentSessionData.getCourses());
 		this.studentView.updateCoursesTab(StudentSessionData.getUnEnrolledCourses());

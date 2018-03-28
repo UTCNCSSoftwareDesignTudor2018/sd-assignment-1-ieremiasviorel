@@ -116,7 +116,7 @@ public class TeacherDAO extends AbstractDAO<Teacher> {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM ");
 		sb.append(this.getTableName());
-		sb.append("WHERE username = ? AND password = ?;");
+		sb.append(" WHERE username = ? AND password = ?;");
 
 		String query = sb.toString();
 
