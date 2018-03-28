@@ -52,7 +52,7 @@ public class StudentView extends JFrame {
 
 	private JList<String> enrollmentList;
 	private JLabel lblStartDate, lblStartDateVal, lblEndDate, lblEndDateVal, lblExamDate, lblExamDateVal, lblCode,
-			lblCodeVal, lblTeacher, lblTeacherVal, lblGrade, lblGradeVal, lblDescription;
+			lblCodeVal, lblGrade, lblGradeVal, lblDescription;
 	private JTextPane txtDescription;
 
 	private JPanel courses;
@@ -176,7 +176,7 @@ public class StudentView extends JFrame {
 		enrollments.add(separator2);
 
 		enrollmentList = new JList<String>();
-		enrollmentList.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		enrollmentList.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		enrollmentList.setValueIsAdjusting(true);
 		enrollmentList.setBackground(SystemColor.activeCaption);
 		enrollmentList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -188,40 +188,20 @@ public class StudentView extends JFrame {
 		lblStartDate.setBounds(323, 150, 105, 25);
 		enrollments.add(lblStartDate);
 
+		lblStartDateVal = new JLabel("");
+		lblStartDateVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblStartDateVal.setBounds(457, 150, 129, 25);
+		enrollments.add(lblStartDateVal);
+		
 		lblEndDate = new JLabel("End Date:");
 		lblEndDate.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEndDate.setBounds(323, 190, 105, 25);
 		enrollments.add(lblEndDate);
 
-		lblStartDateVal = new JLabel("");
-		lblStartDateVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblStartDateVal.setBounds(457, 150, 129, 25);
-		enrollments.add(lblStartDateVal);
-
 		lblEndDateVal = new JLabel("");
 		lblEndDateVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEndDateVal.setBounds(457, 190, 129, 25);
-		enrollments.add(lblEndDateVal);
-
-		lblCode = new JLabel("Code:");
-		lblCode.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblCode.setBounds(323, 110, 105, 25);
-		enrollments.add(lblCode);
-
-		lblCodeVal = new JLabel("");
-		lblCodeVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblCodeVal.setBounds(457, 110, 129, 25);
-		enrollments.add(lblCodeVal);
-
-		lblTeacher = new JLabel("Teacher:");
-		lblTeacher.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTeacher.setBounds(323, 230, 105, 25);
-		enrollments.add(lblTeacher);
-
-		lblTeacherVal = new JLabel("");
-		lblTeacherVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTeacherVal.setBounds(457, 230, 129, 25);
-		enrollments.add(lblTeacherVal);
+		enrollments.add(lblEndDateVal);		
 
 		lblExamDate = new JLabel("Exam Date:");
 		lblExamDate.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -232,6 +212,16 @@ public class StudentView extends JFrame {
 		lblExamDateVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblExamDateVal.setBounds(457, 270, 129, 25);
 		enrollments.add(lblExamDateVal);
+
+		lblCode = new JLabel("Code:");
+		lblCode.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblCode.setBounds(323, 110, 105, 25);
+		enrollments.add(lblCode);
+
+		lblCodeVal = new JLabel("");
+		lblCodeVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblCodeVal.setBounds(457, 110, 129, 25);
+		enrollments.add(lblCodeVal);
 
 		lblGrade = new JLabel("Grade:");
 		lblGrade.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -316,7 +306,7 @@ public class StudentView extends JFrame {
 	public void updateEnrollmentsTab(List<CourseEnrollment> enrollments) {
 		DefaultListModel<String> courseNames = new DefaultListModel<String>();
 		for (CourseEnrollment c : enrollments) {
-			courseNames.addElement(c.getCourse().getCode());
+			courseNames.addElement(c.getCourse().getName());
 		}
 		this.enrollmentList.setModel(courseNames);
 	}
@@ -344,11 +334,12 @@ public class StudentView extends JFrame {
 
 		List<CourseEnrollment> enrollments = StudentSessionData.getCourses();
 		for (CourseEnrollment e : enrollments) {
-			if (e.getCourse().getCode().equals(courseCode)) {
+			if (e.getCourse().getName().equals(courseCode)) {
 				CourseInformation c = e.getCourse();
-				this.lblCodeVal.setText(c.getName());
+				this.lblCodeVal.setText(c.getCode());
 				this.lblStartDateVal.setText(c.getStartDate().toString());
 				this.lblEndDateVal.setText(c.getEndDate().toString());
+				this.lblExamDateVal.setText(c.getExamDate().toString());
 				this.lblGradeVal.setText(e.getGrade().toString());
 				this.txtDescription.setText(c.getDescription());
 				return;

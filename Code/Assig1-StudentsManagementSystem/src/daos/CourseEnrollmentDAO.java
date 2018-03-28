@@ -40,7 +40,7 @@ public class CourseEnrollmentDAO extends AbstractDAO<CourseEnrollment> {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			
-			insertStatement.setLong(1, AbstractDAO.nextID);
+			insertStatement.setLong(1, courseEnroll.getId());
 			insertStatement.setLong(2, courseEnroll.getStudent().getId());
 			insertStatement.setLong(3, courseEnroll.getCourse().getId());
 			insertStatement.setFloat(4, courseEnroll.getGrade());

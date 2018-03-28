@@ -11,47 +11,74 @@ import entities.DBRecord;
 public abstract class AbstractDAO<T extends DBRecord> {
 
 	public static final String DB_NAME = "students_management";
-	public static Long nextID;
+	protected Long nextID;
 
 	public AbstractDAO() {
-		nextID = getNextId();
+		this.nextID = initializeId();
 	}
 
-	public abstract String getTableName();
+	protected abstract String getTableName();
 
-	public Long getNextId() {
+	private Long initializeId() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT MAX(id) FROM ");
+		sb.append(this.getTableName() + ";");
 		
 		Connection connection = ConnectionFactory.getConnection();
 		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		Long nextId = null;
+		ResultSet result = null;
 		
-		String query = "SELECT MAX(id) FROM " + getTableName() + ";";
+		Long id = null;
+		
 		try {
-			statement = connection.prepareStatement(query);
-			resultSet = statement.executeQuery();
-			while (resultSet.next())
-				nextId = resultSet.getLong(1) + 1;
+			statement = connection.prepareStatement(sb.toString());
+			result = statement.executeQuery();
+			result.next();
+			id = result.getLong(1) + 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.close(resultSet);
+			ConnectionFactory.close(result);
 			ConnectionFactory.close(statement);
 			ConnectionFactory.close(connection);
 		}
-		return nextId;
+		
+		return id;
 	}
+	
+//	public Long getNextId() {
+//		
+//		Connection connection = ConnectionFactory.getConnection();
+//		PreparedStatement statement = null;
+//		ResultSet resultSet = null;
+//		Long nextId = null;
+//		
+//		String query = "SELECT MAX(id) FROM " + getTableName() + ";";
+//		try {
+//			statement = connection.prepareStatement(query);
+//			resultSet = statement.executeQuery();
+//			while (resultSet.next())
+//				nextId = resultSet.getLong(1) + 1;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			ConnectionFactory.close(resultSet);
+//			ConnectionFactory.close(statement);
+//			ConnectionFactory.close(connection);
+//		}
+//		return nextId;
+//	}
 	
 	public void insert(T t) {
 
 		Connection connection = ConnectionFactory.getConnection();
 		
-		t.setId(nextID++);
+		t.setId(this.nextID);
 		PreparedStatement insertStatement = createInsertQuery(t, connection);
 
 		try {
 			insertStatement.executeUpdate();
-			//AbstractDAO.nextID++;
+			this.nextID++;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

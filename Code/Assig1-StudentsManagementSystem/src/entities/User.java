@@ -22,7 +22,7 @@ public abstract class User extends DBRecord {
 		this.idNumber = idNum;
 		this.email = email;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}

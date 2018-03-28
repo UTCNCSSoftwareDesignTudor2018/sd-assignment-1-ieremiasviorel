@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import entities.Teacher;
 
 public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 
+	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	
 	@Override
 	public String getTableName() {
 		return Constants.COURSES_TABLE_NAME;
@@ -33,7 +36,7 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 
-			insertStatement.setLong(1, AbstractDAO.nextID);
+			insertStatement.setLong(1, courseInf.getId());
 			insertStatement.setString(2, courseInf.getName());
 			insertStatement.setString(3, courseInf.getCode());
 			insertStatement.setString(4, courseInf.getDescription());
@@ -60,10 +63,10 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 				courseInfo.setId(resultSet.getLong(1));
 				courseInfo.setName(resultSet.getString(2));
 				courseInfo.setCode(resultSet.getString(3));
-				courseInfo.setDescription(resultSet.getString(4));
-				courseInfo.setStartDate((LocalDate) resultSet.getObject(5, LocalDate.class));
-				courseInfo.setEndDate((LocalDate) resultSet.getObject(6, LocalDate.class));
-				courseInfo.setExamDate((LocalDate) resultSet.getObject(7, LocalDate.class));
+				courseInfo.setDescription(resultSet.getString(7));
+				courseInfo.setStartDate(LocalDate.parse(resultSet.getString(4), dateFormat));
+				courseInfo.setEndDate(LocalDate.parse(resultSet.getString(5), dateFormat));
+				courseInfo.setExamDate(LocalDate.parse(resultSet.getString(6), dateFormat));
 
 				courses.add(courseInfo);
 			}
@@ -84,7 +87,7 @@ public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
 		sb.append("code = ?, ");
 		sb.append("description = ?, ");
 		sb.append("start_date = ?, ");
-		sb.append("end_date = ? ");
+		sb.append("end_date = ? ,");
 		sb.append("exam_date = ? ");
 
 		sb.append("WHERE id = ?;");

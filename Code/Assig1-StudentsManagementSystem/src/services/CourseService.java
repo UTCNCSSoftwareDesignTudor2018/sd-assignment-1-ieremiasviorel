@@ -1,5 +1,6 @@
 package services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import daos.CourseInformationDAO;
@@ -15,5 +16,10 @@ public class CourseService {
 	
 	public List<CourseInformation> getAllCourses() {
 		return courseDAO.findAll();
+	}
+	
+	public void modifyCourseExamDate(CourseInformation course, LocalDate newExamDate) {
+		course.setExamDate(newExamDate);
+		courseDAO.update(course);
 	}
 }

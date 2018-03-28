@@ -40,7 +40,7 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			
-			insertStatement.setLong(1, AbstractDAO.nextID);
+			insertStatement.setLong(1, this.nextID);
 			insertStatement.setLong(2, courseTeaching.getTeacher().getId());
 			insertStatement.setLong(3, courseTeaching.getCourse().getId());
 		} catch (SQLException e) {
@@ -114,7 +114,6 @@ public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
 		try {
 			findStatement = connection.prepareStatement(query);
 			findStatement.setLong(1, teacherId);
-			System.out.println(findStatement.toString());
 			resultSet = findStatement.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();

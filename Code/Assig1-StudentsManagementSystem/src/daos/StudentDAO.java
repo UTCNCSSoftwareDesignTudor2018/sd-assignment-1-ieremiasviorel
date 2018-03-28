@@ -30,7 +30,7 @@ public class StudentDAO extends AbstractDAO<Student> {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 
-			insertStatement.setLong(1, AbstractDAO.nextID);
+			insertStatement.setLong(1, student.getId());
 			insertStatement.setString(2, student.getFirstName());
 			insertStatement.setString(3, student.getLastName());
 			insertStatement.setString(4, student.getUserName());

@@ -23,4 +23,11 @@ public class TeacherService {
 			return false;
 		}
 	}
+	
+	public void modifyTeacherData(String username, String password) {
+		TeacherSessionData.getTeacher().setUserName(username);
+		TeacherSessionData.getTeacher().setPassword(password);
+
+		teacherDAO.update(TeacherSessionData.getTeacher());
+	}
 }

@@ -30,7 +30,7 @@ public class TeacherDAO extends AbstractDAO<Teacher> {
 		try {
 			insertStatement = connection.prepareStatement(insertQuery);
 			
-			insertStatement.setLong(1, AbstractDAO.nextID);
+			insertStatement.setLong(1, teacher.getId());
 			insertStatement.setString(2, teacher.getFirstName());
 			insertStatement.setString(3, teacher.getLastName());
 			insertStatement.setString(4, teacher.getUserName());
@@ -133,7 +133,7 @@ public class TeacherDAO extends AbstractDAO<Teacher> {
 			ConnectionFactory.close(findStatement);
 			ConnectionFactory.close(connection);
 		}
-		if (results != null) {
+		if (results != null && !results.isEmpty()) {
 			return results.get(0);
 		} else {
 			return null;
