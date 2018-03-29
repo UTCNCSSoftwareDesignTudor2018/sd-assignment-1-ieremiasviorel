@@ -11,20 +11,24 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import entities.CourseInformation;
+import entities.CourseTeaching;
 import services.CourseService;
 import services.TeacherService;
 import services.TeacherSessionData;
+import services.TeachingService;
 import views.TeacherView;
 
 public class TeacherController {
 
 	private TeacherService teacherService;
+	private TeachingService teachingService;
 	private CourseService courseService;
 
 	private TeacherView teacherView;
 
 	public TeacherController(TeacherService teacherService) {
 		this.teacherService = teacherService;
+		this.teachingService = new TeachingService();
 		this.courseService = new CourseService();
 
 		this.teacherView = new TeacherView();
@@ -35,6 +39,7 @@ public class TeacherController {
 		this.teacherView.addCourseDetailsActionListener(new CourseListListener());
 		this.teacherView.addModifyTeacherDataActionListener(new ModifyUserNamePasswordListener());
 		this.teacherView.addModifyCourseActionListener(new ModifyCourseActionListener());
+		this.teacherView.addCreateCourseActionListener(new CreateCouseActionListener());
 	}
 
 	class CourseListListener implements ListSelectionListener {
@@ -65,6 +70,21 @@ public class TeacherController {
 			
 			courseService.modifyCourseExamDate(courseToModify,
 					LocalDate.parse(teacherView.getNewExamDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}
+	}
+	
+	class CreateCouseActionListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			CourseInformation courseToAdd = teacherView.getCourseToInsert();
+			CourseTeaching courseTeachingToAdd = new CourseTeaching(TeacherSessionData.getTeacher(), courseToAdd);
+			
+			courseService.createCourse(courseToAdd);
+			teachingService.addCourseTeaching(courseTeachingToAdd);
+			TeacherSessionData.getCourses().add(courseTeachingToAdd);
+			
+			teacherView.updateTeachingTab(TeacherSessionData.getCourses());
 		}
 	}
 }

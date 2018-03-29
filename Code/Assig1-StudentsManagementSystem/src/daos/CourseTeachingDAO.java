@@ -11,7 +11,7 @@ import entities.CourseInformation;
 import entities.CourseTeaching;
 import entities.Teacher;
 
-public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> {
+public class CourseTeachingDAO extends AbstractDAO<CourseTeaching> implements CourseTeachingDAO_I {
 
 	private TeacherDAO teacherDAO;
 	private CourseInformationDAO courseDAO;

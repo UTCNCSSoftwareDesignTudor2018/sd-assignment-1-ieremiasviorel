@@ -1,11 +1,12 @@
 package services;
 
 import daos.StudentDAO;
+import daos.StudentDAO_I;
 import entities.Student;
 
 public class StudentService {
 
-	private StudentDAO studentDAO;
+	private StudentDAO_I studentDAO;
 	private EnrollmentService enrollmentService;
 
 	public StudentService() {

@@ -13,7 +13,7 @@ import entities.CourseInformation;
 import entities.Student;
 import entities.Teacher;
 
-public class CourseInformationDAO extends AbstractDAO<CourseInformation> {
+public class CourseInformationDAO extends AbstractDAO<CourseInformation> implements CourseInformationDAO_I {
 
 	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	

@@ -1,11 +1,12 @@
 package services;
 
 import daos.TeacherDAO;
+import daos.TeacherDAO_I;
 import entities.Teacher;
 
 public class TeacherService {
 	
-	private TeacherDAO teacherDAO;
+	private TeacherDAO_I teacherDAO;
 	private TeachingService teachingService;
 	
 	public TeacherService() {

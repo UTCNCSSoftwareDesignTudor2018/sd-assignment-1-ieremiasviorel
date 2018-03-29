@@ -4,22 +4,27 @@ import java.time.LocalDate;
 import java.util.List;
 
 import daos.CourseInformationDAO;
+import daos.CourseInformationDAO_I;
 import entities.CourseInformation;
 
 public class CourseService {
 
-	private CourseInformationDAO courseDAO;
+	private CourseInformationDAO_I courseDAO;
 	
 	public CourseService() {
 		this.courseDAO = new CourseInformationDAO();
 	}
 	
 	public List<CourseInformation> getAllCourses() {
-		return courseDAO.findAll();
+		return this.courseDAO.findAll();
 	}
 	
 	public void modifyCourseExamDate(CourseInformation course, LocalDate newExamDate) {
 		course.setExamDate(newExamDate);
-		courseDAO.update(course);
+		this.courseDAO.update(course);
+	}
+	
+	public void createCourse(CourseInformation course) {
+		this.courseDAO.insert(course);
 	}
 }

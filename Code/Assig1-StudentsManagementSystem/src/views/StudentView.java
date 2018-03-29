@@ -192,7 +192,7 @@ public class StudentView extends JFrame {
 		lblStartDateVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblStartDateVal.setBounds(457, 150, 129, 25);
 		enrollments.add(lblStartDateVal);
-		
+
 		lblEndDate = new JLabel("End Date:");
 		lblEndDate.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEndDate.setBounds(323, 190, 105, 25);
@@ -201,7 +201,7 @@ public class StudentView extends JFrame {
 		lblEndDateVal = new JLabel("");
 		lblEndDateVal.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblEndDateVal.setBounds(457, 190, 129, 25);
-		enrollments.add(lblEndDateVal);		
+		enrollments.add(lblEndDateVal);
 
 		lblExamDate = new JLabel("Exam Date:");
 		lblExamDate.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -267,7 +267,7 @@ public class StudentView extends JFrame {
 		coursesTable.setSurrendersFocusOnKeystroke(true);
 		coursesTable.setRowSelectionAllowed(true);
 		coursesTable.setColumnSelectionAllowed(false);
-		
+
 		coursesTableModel = new DefaultTableModel(new Object[][] {},
 				new String[] { "Code", "Name", "Teacher", "Start Date", "Description" }) {
 			private static final long serialVersionUID = 1L;
@@ -320,10 +320,10 @@ public class StudentView extends JFrame {
 		}
 		this.coursesTable.setModel(tableModel);
 	}
-	
+
 	public void updateTable() {
 		int selectedRow = coursesTable.getSelectedRow();
-		DefaultTableModel tableModel = (DefaultTableModel)coursesTable.getModel();
+		DefaultTableModel tableModel = (DefaultTableModel) coursesTable.getModel();
 		tableModel.removeRow(selectedRow);
 		coursesTable.setModel(coursesTableModel);
 	}
@@ -340,7 +340,11 @@ public class StudentView extends JFrame {
 				this.lblStartDateVal.setText(c.getStartDate().toString());
 				this.lblEndDateVal.setText(c.getEndDate().toString());
 				this.lblExamDateVal.setText(c.getExamDate().toString());
-				this.lblGradeVal.setText(e.getGrade().toString());
+				if (e.getGrade().equals(Float.valueOf(0))) {
+					this.lblGradeVal.setText("Not assigned");
+				} else {
+					this.lblGradeVal.setText(e.getGrade().toString());
+				}
 				this.txtDescription.setText(c.getDescription());
 				return;
 			}
@@ -361,11 +365,11 @@ public class StudentView extends JFrame {
 	public void addModifyStudentDataActionListener(ActionListener e) {
 		this.btnSaveChanges.addActionListener(e);
 	}
-	
+
 	public void addEnrollButtonActionListener(ActionListener e) {
 		this.btnEnroll.addActionListener(e);
 	}
-	
+
 	public int getCoursesTableSelectedRow() {
 		return this.coursesTable.getSelectedRow();
 	}

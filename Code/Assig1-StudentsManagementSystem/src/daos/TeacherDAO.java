@@ -9,7 +9,7 @@ import java.util.List;
 
 import entities.Teacher;
 
-public class TeacherDAO extends AbstractDAO<Teacher> {
+public class TeacherDAO extends AbstractDAO<Teacher> implements TeacherDAO_I {
 
 	@Override
 	public String getTableName() {

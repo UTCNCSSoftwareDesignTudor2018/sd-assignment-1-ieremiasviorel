@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import daos.CourseTeachingDAO;
+import daos.CourseTeachingDAO_I;
 import entities.CourseEnrollment;
 import entities.CourseInformation;
 import entities.CourseTeaching;
@@ -13,8 +14,8 @@ import entities.Teacher;
 
 public class TeachingService {
 
-	private CourseTeachingDAO courseTeachingDAO;
-	
+	private CourseTeachingDAO_I courseTeachingDAO;
+
 	public TeachingService() {
 		this.courseTeachingDAO = new CourseTeachingDAO();
 	}
@@ -22,7 +23,7 @@ public class TeachingService {
 	public List<CourseTeaching> getTeacherCourses(Teacher teacher) {
 		return courseTeachingDAO.findByTeacherId(teacher.getId());
 	}
-	
+
 	public List<CourseTeaching> getAllCourseTeachers() {
 		return courseTeachingDAO.findAll();
 	}
@@ -42,5 +43,9 @@ public class TeachingService {
 			}
 		}
 		return filteredList;
+	}
+	
+	public void addCourseTeaching(CourseTeaching teaching) {
+		this.courseTeachingDAO.insert(teaching);
 	}
 }

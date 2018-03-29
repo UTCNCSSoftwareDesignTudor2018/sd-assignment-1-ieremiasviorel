@@ -3,13 +3,14 @@ package services;
 import java.util.List;
 
 import daos.CourseEnrollmentDAO;
+import daos.CourseEnrollmentDAO_I;
 import entities.CourseEnrollment;
 import entities.CourseInformation;
 import entities.Student;
 
 public class EnrollmentService {
 
-	private CourseEnrollmentDAO enrollmentDAO;
+	private CourseEnrollmentDAO_I enrollmentDAO;
 	
 	public EnrollmentService() {
 		this.enrollmentDAO = new CourseEnrollmentDAO();

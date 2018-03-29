@@ -9,7 +9,7 @@ import java.util.List;
 
 import entities.Student;
 
-public class StudentDAO extends AbstractDAO<Student> {
+public class StudentDAO extends AbstractDAO<Student> implements StudentDAO_I {
 
 	@Override
 	public String getTableName() {

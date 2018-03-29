@@ -3,6 +3,8 @@ package views;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,8 @@ import services.TeacherSessionData;
 public class TeacherView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+
+	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	private JPanel contentPane;
 	private JTabbedPane teacherMenu;
@@ -356,6 +360,18 @@ public class TeacherView extends JFrame {
 		}
 	}
 
+	public CourseInformation getCourseToInsert() {
+		String courseName = this.tfCourseName.getText();
+		String courseCode = this.tfCourseCode.getText();
+		String courseDescription = this.txtCourseDescription.getText();
+		LocalDate courseStartDate = LocalDate.parse(this.tfCourseStartDate.getText(), dateFormat);
+		LocalDate courseEndDate = LocalDate.parse(this.tfCourseStartDate.getText(), dateFormat);
+		LocalDate courseExamDate = LocalDate.parse(this.tfCourseStartDate.getText(), dateFormat);
+
+		return new CourseInformation(courseName, courseCode, courseDescription, courseStartDate, courseEndDate,
+				courseExamDate);
+	}
+
 	public List<String> getUserNameAndPassword() {
 		List<String> modifiedData = new ArrayList<String>();
 		modifiedData.add(this.txtUsername.getText());
@@ -381,5 +397,9 @@ public class TeacherView extends JFrame {
 
 	public void addModifyCourseActionListener(ActionListener e) {
 		this.btnSaveCourseChanges.addActionListener(e);
+	}
+
+	public void addCreateCourseActionListener(ActionListener e) {
+		this.btnAddCourse.addActionListener(e);
 	}
 }
