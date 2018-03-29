@@ -46,29 +46,6 @@ public abstract class AbstractDAO<T extends DBRecord> {
 		return id;
 	}
 	
-//	public Long getNextId() {
-//		
-//		Connection connection = ConnectionFactory.getConnection();
-//		PreparedStatement statement = null;
-//		ResultSet resultSet = null;
-//		Long nextId = null;
-//		
-//		String query = "SELECT MAX(id) FROM " + getTableName() + ";";
-//		try {
-//			statement = connection.prepareStatement(query);
-//			resultSet = statement.executeQuery();
-//			while (resultSet.next())
-//				nextId = resultSet.getLong(1) + 1;
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			ConnectionFactory.close(resultSet);
-//			ConnectionFactory.close(statement);
-//			ConnectionFactory.close(connection);
-//		}
-//		return nextId;
-//	}
-	
 	public void insert(T t) {
 
 		Connection connection = ConnectionFactory.getConnection();

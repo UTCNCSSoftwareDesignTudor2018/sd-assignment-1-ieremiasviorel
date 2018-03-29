@@ -213,32 +213,4 @@ public class CourseEnrollmentDAO extends AbstractDAO<CourseEnrollment> {
 		}
 		return enrollments;
 	}
-	
-//	public List<Student> findCourseStudents(Long courseId) {
-//		Connection connection = ConnectionFactory.getConnection();
-//		PreparedStatement findStatement = null;
-//		ResultSet resultSet = null;
-//		
-//		StringBuilder sb = new StringBuilder();
-//		sb.append("SELECT " + Constants.STUDENTS_TABLE_NAME + ".* FROM ");
-//		sb.append(Constants.ENROLLMENTS_TABLE_NAME + " INNER JOIN ");
-//		sb.append(Constants.STUDENTS_TABLE_NAME);
-//		sb.append(" ON " + Constants.ENROLLMENTS_TABLE_NAME + ".student_id = ");
-//		sb.append(Constants.STUDENTS_TABLE_NAME + ".id WHERE ");
-//		sb.append(Constants.ENROLLMENTS_TABLE_NAME + ".course_id = ?;");
-//		
-//		String query = sb.toString();
-//		
-//		try {
-//			findStatement = connection.prepareStatement(query);
-//			findStatement.setLong(1, courseId);
-//			resultSet = findStatement.executeQuery();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			ConnectionFactory.close(resultSet);
-//			ConnectionFactory.close(findStatement);
-//			ConnectionFactory.close(connection);
-//		}
-//		return this.studentDAO.createObjects(resultSet);
-//	}
 }

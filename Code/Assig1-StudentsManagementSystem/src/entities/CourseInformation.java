@@ -26,7 +26,6 @@ public class CourseInformation extends DBRecord {
 		this.examDate = examDate;
 	}
 
-	// exam date can be set at later, after the CourseInformation is created
 	public CourseInformation(String name, String code, String description, LocalDate startDate,
 			LocalDate endDate) {
 		super();
