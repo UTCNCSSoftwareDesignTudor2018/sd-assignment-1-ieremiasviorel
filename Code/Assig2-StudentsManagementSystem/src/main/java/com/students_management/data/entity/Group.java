@@ -1,19 +1,21 @@
-package data.entity;
+package com.students_management.data.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "student_group")
-public class Group extends DBRecord {
+@Table(name = "groups")
+public class Group extends BaseEntity {
+
+	private static final long serialVersionUID = -627086939299720811L;
 
 	@Column(name = "number")
 	protected String number;
-	
+
 	@Column(name = "faculty")
 	protected String faculty;
-	
+
 	@Column(name = "specialization")
 	protected String specialization;
 

@@ -1,21 +1,17 @@
-package data.entity;
+package com.students_management.data.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 
-//@Entity
-//@Table(name = "course_info")
-@Entity
 @Embeddable
-public class CourseInfo extends DBRecord {
+public class CourseInfo {
 
 	@Column(name = "name")
 	protected String name;
-	
+
 	@Column(name = "code")
 	protected String code;
-	
+
 	@Column(name = "description")
 	protected String description;
 	

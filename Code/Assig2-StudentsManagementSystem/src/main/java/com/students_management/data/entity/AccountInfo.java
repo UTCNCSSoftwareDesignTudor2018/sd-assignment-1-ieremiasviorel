@@ -1,12 +1,10 @@
-package data.entity;
+package com.students_management.data.entity;
 
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-//@Entity
-//@Table(name = "account_info")
 @Embeddable
 public class AccountInfo {
 

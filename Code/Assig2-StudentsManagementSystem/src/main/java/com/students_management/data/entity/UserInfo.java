@@ -1,12 +1,11 @@
-package data.entity;
+package com.students_management.data.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-//@Table(name = "user_info")
 public class UserInfo {
-
+	
 	@Column(name = "first_name")
 	protected String firstName;
 	
