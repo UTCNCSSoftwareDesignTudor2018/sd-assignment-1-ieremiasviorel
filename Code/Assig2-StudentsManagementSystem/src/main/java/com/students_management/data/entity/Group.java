@@ -10,7 +10,7 @@ public class Group extends BaseEntity {
 
 	private static final long serialVersionUID = -627086939299720811L;
 
-	@Column(name = "number")
+	@Column(name = "number", unique = true)
 	protected String number;
 
 	@Column(name = "faculty")

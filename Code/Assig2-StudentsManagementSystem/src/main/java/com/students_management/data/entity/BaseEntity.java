@@ -20,7 +20,7 @@ public abstract class BaseEntity implements Serializable {
 	private static final long serialVersionUID = 5177731068920100661L;
 
 	@Transient
-	protected Calendar calendar = Calendar.getInstance();
+	protected static Calendar calendar = Calendar.getInstance();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

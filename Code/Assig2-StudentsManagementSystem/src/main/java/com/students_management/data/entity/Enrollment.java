@@ -23,4 +23,14 @@ public class Enrollment extends BaseEntity {
 	
 	@Column(name = "grade")
 	protected Float grade;
+	
+	public Enrollment(Student student, Course course) {
+		this(student, course, null);
+	}
+	
+	public Enrollment(Student student, Course course, Float grade) {
+		this.student = student;
+		this.course = course;
+		this.grade = grade;
+	}
 }

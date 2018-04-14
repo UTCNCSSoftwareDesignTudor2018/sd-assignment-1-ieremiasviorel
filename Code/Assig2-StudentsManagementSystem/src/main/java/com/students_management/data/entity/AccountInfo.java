@@ -4,11 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Embeddable
 public class AccountInfo {
 
-	@Column(name = "username")
+	@Column(name = "username", unique = true)
 	protected String username;
 	
 	@Column(name = "password")
@@ -17,6 +19,7 @@ public class AccountInfo {
 	@Column(name = "status")
 	protected String status;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "registration_date")
 	protected Date registrationDate;
 

@@ -9,7 +9,7 @@ public class CourseInfo {
 	@Column(name = "name")
 	protected String name;
 
-	@Column(name = "code")
+	@Column(name = "code", unique = true)
 	protected String code;
 
 	@Column(name = "description")

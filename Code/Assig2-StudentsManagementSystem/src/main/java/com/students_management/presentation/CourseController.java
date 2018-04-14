@@ -15,7 +15,7 @@ import com.students_management.data.entity.Course;
 public class CourseController {
 
 	@Autowired
-	CourseService courseService;
+	private CourseService courseService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String insertCourse() {

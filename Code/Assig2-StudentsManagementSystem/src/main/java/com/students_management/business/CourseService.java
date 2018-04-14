@@ -10,9 +10,14 @@ import com.students_management.data.repository.CourseJpaRepository;
 public class CourseService {
 
 	@Autowired
-	public CourseJpaRepository courseJpaRepository;
+	private CourseJpaRepository courseJpaRepository;
+
+	public Course createCourse(Course course) {
+
+		return courseJpaRepository.save(course);
+	}
 	
-	public void createCourse(Course course) {
-		courseJpaRepository.save(course);
+	public Course findCourse(String code) {
+		return courseJpaRepository.findByCourseInfoCode(code);
 	}
 }
