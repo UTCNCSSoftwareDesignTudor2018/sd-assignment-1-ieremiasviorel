@@ -23,14 +23,14 @@ public class Student extends User {
 	protected Group group;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	protected List<Enrollment> courses;
+	protected List<Enrollment> enrollments;
 
 	public Student(UserInfo userInfo, AccountInfo accountInfo, Group group) {
 		super();
 		this.userInfo = userInfo;
 		this.accountInfo = accountInfo;
 		this.group = group;
-		this.courses = new ArrayList<Enrollment>();
+		this.enrollments = new ArrayList<Enrollment>();
 	}
 
 	public Student(String firstName, String lastName, String idNumber, String address, String email, String phone,
@@ -41,5 +41,21 @@ public class Student extends User {
 	
 	public Student() {
 		super();
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public List<Enrollment> getEnrollments() {
+		return enrollments;
+	}
+
+	public void setEnrollments(List<Enrollment> enrollments) {
+		this.enrollments = enrollments;
 	}
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.students_management.business.StudentService;
+import com.students_management.business.StudentSessionData;
 import com.students_management.business.TeacherService;
 import com.students_management.data.entity.Student;
 import com.students_management.data.entity.Teacher;
@@ -40,10 +41,13 @@ public class MainController {
 	public ModelAndView mainPage(HttpServletRequest request) {
 
 		String username = request.getParameter("studentSelect");
-		System.out.println(username);
+		
+		Student loggedInStudent = studentService.findStudent(username);
+		StudentSessionData.setUser(loggedInStudent);
 		
 		ModelAndView mv = new ModelAndView("main_page");
-		mv.addObject("username", username);
+		System.err.println(StudentSessionData.getUser().getEnrollments().size());
+		mv.addObject("loggedInStudent", StudentSessionData.getUser());
 		return mv;
 	}
 }
